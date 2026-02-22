@@ -1,0 +1,1 @@
+web: gunicorn painter_portfolio.wsgi --log-file -
