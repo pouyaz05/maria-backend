@@ -155,39 +155,19 @@ CACHES = {
 # =========================
 # LOGGING
 # =========================
-
-LOG_DIR = BASE_DIR / "logs"
-LOG_DIR.mkdir(exist_ok=True)
-
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "formatters": {
-        "verbose": {
-            "format": "{levelname} {asctime} {module} {message}",
-            "style": "{",
-        },
-    },
     "handlers": {
-        "file": {
-            "level": "INFO",
-            "class": "logging.FileHandler",
-            "filename": LOG_DIR / "orders.log",
-            "formatter": "verbose",
-        },
         "console": {
             "class": "logging.StreamHandler",
         },
     },
-    "loggers": {
-        "gallery": {
-            "handlers": ["file", "console"],
-            "level": "INFO",
-            "propagate": False,
-        },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
     },
 }
-
 # =========================
 # DEFAULT FIELD
 # =========================
