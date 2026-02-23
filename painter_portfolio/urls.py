@@ -13,7 +13,7 @@ urlpatterns = [
 
 # React SPA Catch-All
 urlpatterns += [
-    re_path(r"^(?!static/|assets/).*", TemplateView.as_view(template_name="index.html")),
+    re_path(r"^(?!assets/).*", TemplateView.as_view(template_name="index.html")),
 ]
 
 # فقط در حالت توسعه
