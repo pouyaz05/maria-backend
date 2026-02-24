@@ -85,9 +85,10 @@ TEMPLATES = [
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR / "staticfiles") 
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR / "static") 
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR / "static") 
+# ]
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # =========================
 # MEDIA
 # =========================
@@ -99,7 +100,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 # CORS (مخصوص Vercel)
 # =========================
 
-CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOWED_ORIGINS = [
     "https://your-vercel-project.vercel.app",
