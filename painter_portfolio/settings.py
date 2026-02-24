@@ -8,18 +8,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY
 # =========================
 
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-secret-key")
+SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
 
-DEBUG = os.environ.get("DEBUG", "True") == "True"
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-    "maria-art.liara.run",
-]
+ALLOWED_HOSTS = ["*"]  # فعلاً برای اینکه خطا نگیری
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://maria-art.liara.run",
+    "https://maria-backend.onrender.com",
 ]
 
 # =========================
@@ -50,27 +46,18 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "painter_portfolio.urls"
-
 WSGI_APPLICATION = "painter_portfolio.wsgi.application"
 
 # =========================
-# DATABASE
+# DATABASE (Render PostgreSQL)
 # =========================
 
-if os.environ.get("DATABASE_URL"):
-    DATABASES = {
-        "default": dj_database_url.config(
-            default=os.environ.get("DATABASE_URL"),
-            conn_max_age=600,
-        )
-    }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
+DATABASES = {
+    "default": dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        conn_max_age=600,
+    )
+}
 
 # =========================
 # TEMPLATES
@@ -92,32 +79,35 @@ TEMPLATES = [
 ]
 
 # =========================
-# STATIC & MEDIA
+# STATIC
 # =========================
-STATIC_URL = "/assets/"
+
+STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [BASE_DIR / "static"]
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+# =========================
+# MEDIA
+# =========================
+
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR , "media")
+MEDIA_ROOT = BASE_DIR / "media"
 
 # =========================
-# CORS
+# CORS (مخصوص Vercel)
 # =========================
 
-if DEBUG:
-    CORS_ALLOW_ALL_ORIGINS = True
-else:
-    CORS_ALLOWED_ORIGINS = [
-        "https://maria-art.liara.run",
-    ]
+CORS_ALLOW_ALL_ORIGINS = False
+
+CORS_ALLOWED_ORIGINS = [
+    "https://your-vercel-project.vercel.app",
+]
 
 CORS_ALLOW_CREDENTIALS = True
 
 # =========================
-# EMAIL (GMAIL SMTP)
+# EMAIL
 # =========================
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
@@ -137,39 +127,5 @@ if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    X_FRAME_OPTIONS = "DENY"
-
-# =========================
-# CACHE
-# =========================
-
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        "LOCATION": "unique-snowflake",
-    }
-}
-
-# =========================
-# LOGGING
-# =========================
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-        },
-    },
-    "root": {
-        "handlers": ["console"],
-        "level": "INFO",
-    },
-}
-# =========================
-# DEFAULT FIELD
-# =========================
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
